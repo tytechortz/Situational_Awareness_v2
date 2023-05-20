@@ -33,7 +33,7 @@ app.layout = dbc.Container([
     dbc.Row([
         dbc.Col([
             dcc.RadioItems(
-                id='graph-type',
+                id="graph-type",
                 options=[
                     {"label": i, "value": i}
                     for i in ["Pop", "Density"]
@@ -44,6 +44,13 @@ app.layout = dbc.Container([
         ], width=2)
     ])
 ])
+
+@app.callback(
+    Output("ct-map", "figure"),
+    Input("graph-type", "value")
+)
+def update_Choropleth(gtype):
+    return (print(gtype))
 
 if __name__ == "__main__":
     app.run_server(debug=True, port=8080)
