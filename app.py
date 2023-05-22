@@ -6,6 +6,9 @@ import plotly.graph_objects as go
 from utils import (
     get_ct_pop_data
 )
+from figures_utils import (
+    get_figure
+)
 
 
 app = Dash(__name__, suppress_callback_exceptions=True, external_stylesheets=[dbc.themes.DARKLY])
@@ -18,6 +21,7 @@ header = html.Div("Arapahoe Situational Awareness", className="h2 p-2 text-white
 template = {"layout": {"paper_bgcolor": bgcolor, "plot_bgcolor": bgcolor}}
 
 ct_tot_pop_data = get_ct_pop_data()
+
 
 def blank_fig(height):
     """
@@ -56,11 +60,28 @@ app.layout = dbc.Container([
     Input("graph-type", "value")
 )
 def update_Choropleth(gtype):
+
+
+    
+
     if gtype == "Pop":
         df = ct_tot_pop_data
 
 
-    return (print(df))
+
+
+
+    
+    
+    
+    fig = get_figure(
+        df
+    )
+
+
+
+
+    return fig
 
 if __name__ == "__main__":
     app.run_server(debug=True, port=8080)
