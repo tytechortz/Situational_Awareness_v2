@@ -76,7 +76,7 @@ def update_Choropleth(gtype):
         return fig
     
 
-    elif gtype == "Pop":
+    elif gtype in ["Pop", "Density"]:
         df = df
     # else:
     #     df = df

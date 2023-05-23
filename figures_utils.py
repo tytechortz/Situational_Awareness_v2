@@ -15,8 +15,8 @@ def get_Choropleth(df, gdf_2020, arg, gtype, fig=None):
 
         # print(df.columns)
 
-        df['FIPS'] = df['FIPS'].astype(str)
-        df = gdf_2020.merge(df, on="FIPS")
+    df['FIPS'] = df['FIPS'].astype(str)
+    df = gdf_2020.merge(df, on="FIPS")
     # print(df)
     # df['FIPS'] = df['FIPS'].astype(str)
 
@@ -61,15 +61,17 @@ def get_figure(df, gdf_2020, gtype):
 
     arg = dict()
     if gtype is None:
-        fig = go.Figure()
+        fig = go.Figure(
+            go.Scattermapbox()
+        )
         # fig = get_Choropleth(df, gdf_2020, arg, gtype)
         layer = [
-        {
-            "source": Arap_outline["geometry"].__geo_interface__,
-            "type": "line",
-            "color": "black"
-        }
-    ]
+            {
+                "source": Arap_outline["geometry"].__geo_interface__,
+                "type": "line",
+                "color": "black"
+            }
+        ]
 
         fig.update_layout(mapbox_style="carto-positron", 
                             mapbox_zoom=10.4,
@@ -79,8 +81,9 @@ def get_figure(df, gdf_2020, gtype):
                             uirevision='constant')
         return fig
 
-    elif gtype == "Pop":
-        arg["z_vec"] = df['E_TOTPOP']
+    elif gtype in ["Pop", "Density"]:
+        if gtype == "Pop":
+            arg["z_vec"] = df['E_TOTPOP']
     
 
 
