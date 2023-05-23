@@ -4,7 +4,8 @@ import geopandas as gpd
 import plotly.graph_objects as go
 
 from utils import (
-    get_ct_pop_data
+    get_SVI_data,
+    get_CT_data
 )
 from figures_utils import (
     get_figure
@@ -20,8 +21,8 @@ header = html.Div("Arapahoe Situational Awareness", className="h2 p-2 text-white
 
 template = {"layout": {"paper_bgcolor": bgcolor, "plot_bgcolor": bgcolor}}
 
-ct_tot_pop_data = get_ct_pop_data()
-
+SVI_data = get_SVI_data()
+CT_data = get_CT_data()
 
 def blank_fig(height):
     """
@@ -61,13 +62,16 @@ app.layout = dbc.Container([
 )
 def update_Choropleth(gtype):
 
+    df = SVI_data
 
+    gdf_2020 = CT_data
     
 
     if gtype == "Pop":
-        df = ct_tot_pop_data
+        df_pop = df[["E_TOTPOP"]]
+        print(df_pop)
 
-
+    
 
 
 
