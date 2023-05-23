@@ -9,6 +9,7 @@ Arap_outline = gpd.read_file('/Users/jamesswank/Python_Projects/Situational_Awar
 
 def get_Choropleth(df, gdf_2020, arg, gtype, fig=None):
 
+
     if fig is None:
         fig = go.Figure()
 
@@ -51,19 +52,18 @@ def get_Choropleth(df, gdf_2020, arg, gtype, fig=None):
     )
     return fig
 
+# def get_outline_map():
+
+
 
 
 def get_figure(df, gdf_2020, gtype):
 
     arg = dict()
-
-    if gtype == "Pop":
-        arg["z_vec"] = df['E_TOTPOP']
-
-    fig = get_Choropleth(df, gdf_2020, arg, gtype)
-    
-
-    layer = [
+    if gtype is None:
+        fig = go.Figure()
+        # fig = get_Choropleth(df, gdf_2020, arg, gtype)
+        layer = [
         {
             "source": Arap_outline["geometry"].__geo_interface__,
             "type": "line",
@@ -71,11 +71,35 @@ def get_figure(df, gdf_2020, gtype):
         }
     ]
 
-    fig.update_layout(mapbox_style="carto-positron", 
-                        mapbox_zoom=10.4,
-                        mapbox_layers=layer,
-                        mapbox_center={"lat": 39.65, "lon": -104.8},
-                        margin={"r":0,"t":0,"l":0,"b":0},
-                        uirevision='constant')
+        fig.update_layout(mapbox_style="carto-positron", 
+                            mapbox_zoom=10.4,
+                            mapbox_layers=layer,
+                            mapbox_center={"lat": 39.65, "lon": -104.8},
+                            margin={"r":0,"t":0,"l":0,"b":0},
+                            uirevision='constant')
+        return fig
+
+    elif gtype == "Pop":
+        arg["z_vec"] = df['E_TOTPOP']
     
-    return fig
+
+
+        fig = get_Choropleth(df, gdf_2020, arg, gtype)
+        
+
+        # layer = [
+        #     {
+        #         "source": Arap_outline["geometry"].__geo_interface__,
+        #         "type": "line",
+        #         "color": "black"
+        #     }
+        # ]
+
+        fig.update_layout(mapbox_style="carto-positron", 
+                            mapbox_zoom=10.4,
+                            # mapbox_layers=layer,
+                            mapbox_center={"lat": 39.65, "lon": -104.8},
+                            margin={"r":0,"t":0,"l":0,"b":0},
+                            uirevision='constant')
+        
+        return fig

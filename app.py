@@ -43,15 +43,16 @@ app.layout = dbc.Container([
     dbc.Row(dcc.Graph(id='ct-map', figure=blank_fig(500))),
     dbc.Row([
         dbc.Col([
-            dcc.RadioItems(
-                id="graph-type",
-                options=[
-                    {"label": i, "value": i}
-                    for i in ["Pop", "Density"]
-                ],
-                value="Pop",
-                inline=True
-            ),
+            # dcc.RadioItems(
+            #     id="graph-type",
+            #     options=[
+            #         {"label": i, "value": i}
+            #         for i in ["Pop", "Density"]
+            #     ],
+            #     # value="Pop",
+            #     inline=True
+            # ),
+            dcc.Dropdown(['Pop', 'Density'], id = 'graph-type')
         ], width=2)
     ])
 ])
@@ -65,10 +66,20 @@ def update_Choropleth(gtype):
     df = SVI_data
 
     gdf_2020 = CT_data
+    print(gtype)
+    if gtype is None:
+        fig = get_figure(
+            df,
+            gdf_2020,
+            gtype
+        )
+        return fig
     
 
-    if gtype == "Pop":
+    elif gtype == "Pop":
         df = df
+    # else:
+    #     df = df
         # df['FIPS'] = df['FIPS'].astype(str)
         # df = gdf_2020.merge(df, on="FIPS")
         
@@ -82,11 +93,11 @@ def update_Choropleth(gtype):
     
     
     
-    fig = get_figure(
-        df,
-        gdf_2020,
-        gtype
-    )
+        fig = get_figure(
+            df,
+            gdf_2020,
+            gtype
+        )
 
 
 
