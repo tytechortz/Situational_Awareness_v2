@@ -11,24 +11,29 @@ def get_Choropleth(df, fig=None):
 
     if fig is None:
         fig = go.Figure()
+    # print(df)
+    # df['FIPS'] = df['FIPS'].astype(str)
 
-    df['FIPS'] = df['FIPS'].astype(str)
+    # gdf_2020 = gpd.read_file('/Users/jamesswank/Python_Projects/Situational_Awareness_v2/Data/2020_CT')
+    # print(gdf_2020)
+    # geo_data = gdf_2020.merge(df, on='FIPS')
+    # geo_data = geo_data.set_index('FIPS')
+    # print(list(geo_data.columns))
 
-    gdf_2020 = gpd.read_file('/Users/jamesswank/Python_Projects/Situational_Awareness_v2/Data/2020_CT')
-    print(gdf_2020)
-    geo_data = gdf_2020.merge(df, on='FIPS')
-    geo_data = geo_data.set_index('FIPS')
-    print(geo_data)
 
     fig.add_trace(
         go.Choroplethmapbox(
-            geojson = eval(geo_data['geometry'].to_json()),
-            locations = geo_data.index,
+            # geojson = eval(geo_data['geometry_x'].to_json()),
+            geojson = eval(df['geometry'].to_json()),
+            # geojson = geo_data,
+            # locations = geo_data.index,
+            locations = df.index,
             # featureidkey = "properties.name",
             # colorscale = arg['colorscale'],
             colorscale = "earth",
             # z = arg['z_vec'],
-            z = geo_data['E_TOTPOP'],
+            # z = geo_data['E_TOTPOP'],
+            z = df["E_TOTPOP"],
             # zmin = arg['min_value'],
             # zmax = arg['max_value'],
             # text = arg['text_vec'],

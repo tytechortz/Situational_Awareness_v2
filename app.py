@@ -68,10 +68,14 @@ def update_Choropleth(gtype):
     
 
     if gtype == "Pop":
-        df_pop = df[["E_TOTPOP"]]
-        print(df_pop)
+        # df = df[["E_TOTPOP"]]
+        df['FIPS'] = df['FIPS'].astype(str)
+        df = gdf_2020.merge(df, on="FIPS")
+        
+        # print(df)
 
-    
+    # elif gtype == "Density":
+    #     df_
 
 
 
