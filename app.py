@@ -52,10 +52,10 @@ app.layout = dbc.Container([
                     {"label": i, "value": i}
                     for i in ["SVI", "Facilities"]
                 ],
-                # value="Pop",
+                value="SVI",
                 inline=True
             ),
-            dcc.Dropdown(id='graph-type', value='E_TOTPOP')
+            dcc.Dropdown(id='graph-type')
         ], width=2)
     ])
 ])
@@ -64,18 +64,19 @@ app.layout = dbc.Container([
         Output('graph-type', 'options'),
         Input('map-category', 'value'))
 def category_options(selected_value):
-    print(col_list)
+    # print(col_list)
     if selected_value == "SVI":
         variables = [{'label': i, 'value': i} for i in col_list]
 
-    return variables 
+        return variables 
 
 @app.callback(
     Output("ct-map", "figure"),
+    Input("map-category", "value"),
     Input("graph-type", "value")
 )
-def update_Choropleth(gtype):
-
+def update_Choropleth(category, gtype):
+    print(category)
     df = SVI_data
 
     gdf_2020 = CT_data
@@ -84,15 +85,17 @@ def update_Choropleth(gtype):
         fig = get_figure(
             df,
             gdf_2020,
-            gtype
+            gtype,
+            category
         )
         return fig
     
 
-    elif gtype in ["Pop", "Density"]:
+    elif gtype:
         df = df
+        # print(df)
     # else:
-    #     df = df
+        # df = df
         # df['FIPS'] = df['FIPS'].astype(str)
         # df = gdf_2020.merge(df, on="FIPS")
         
@@ -109,13 +112,14 @@ def update_Choropleth(gtype):
         fig = get_figure(
             df,
             gdf_2020,
-            gtype
+            gtype,
+            category
         )
 
 
 
 
-    return fig
+        return fig
 
 if __name__ == "__main__":
     app.run_server(debug=True, port=8080)

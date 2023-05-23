@@ -7,7 +7,7 @@ from config import config as cfg
 Arap_outline = gpd.read_file('/Users/jamesswank/Python_Projects/Situational_Awareness_v2/us-county-boundaries')
 
 
-def get_Choropleth(df, gdf_2020, arg, gtype, fig=None):
+def get_Choropleth(df, gdf_2020, arg, gtype, category, fig=None):
 
 
     if fig is None:
@@ -57,7 +57,7 @@ def get_Choropleth(df, gdf_2020, arg, gtype, fig=None):
 
 
 
-def get_figure(df, gdf_2020, gtype):
+def get_figure(df, gdf_2020, gtype, category):
 
     arg = dict()
     if gtype is None:
@@ -81,13 +81,14 @@ def get_figure(df, gdf_2020, gtype):
                             uirevision='constant')
         return fig
 
-    elif gtype in ["Pop", "Density"]:
-        if gtype == "Pop":
-            arg["z_vec"] = df['E_TOTPOP']
-    
+    elif gtype:
+        if category == "SVI":
+            print(category)
+            arg["z_vec"] = df[gtype]
+            print(arg)
 
 
-        fig = get_Choropleth(df, gdf_2020, arg, gtype)
+        fig = get_Choropleth(df, gdf_2020, arg, gtype, category)
         
 
         # layer = [
