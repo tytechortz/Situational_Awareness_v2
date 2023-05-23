@@ -24,6 +24,9 @@ template = {"layout": {"paper_bgcolor": bgcolor, "plot_bgcolor": bgcolor}}
 SVI_data = get_SVI_data()
 CT_data = get_CT_data()
 
+col_list = list(SVI_data)
+# print(col_list)
+
 def blank_fig(height):
     """
     Build blank figure with the requested height
@@ -43,19 +46,29 @@ app.layout = dbc.Container([
     dbc.Row(dcc.Graph(id='ct-map', figure=blank_fig(500))),
     dbc.Row([
         dbc.Col([
-            # dcc.RadioItems(
-            #     id="graph-type",
-            #     options=[
-            #         {"label": i, "value": i}
-            #         for i in ["Pop", "Density"]
-            #     ],
-            #     # value="Pop",
-            #     inline=True
-            # ),
-            dcc.Dropdown(['Pop', 'Density'], id = 'graph-type')
+            dcc.RadioItems(
+                id="map-category",
+                options=[
+                    {"label": i, "value": i}
+                    for i in ["SVI", "Facilities"]
+                ],
+                # value="Pop",
+                inline=True
+            ),
+            dcc.Dropdown(id='graph-type', value='E_TOTPOP')
         ], width=2)
     ])
 ])
+
+@app.callback(
+        Output('graph-type', 'options'),
+        Input('map-category', 'value'))
+def category_options(selected_value):
+    print(col_list)
+    if selected_value == "SVI":
+        variables = [{'label': i, 'value': i} for i in col_list]
+
+    return variables 
 
 @app.callback(
     Output("ct-map", "figure"),

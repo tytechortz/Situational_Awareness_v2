@@ -25,7 +25,7 @@ def get_Choropleth(df, gdf_2020, arg, gtype, fig=None):
     # geo_data = gdf_2020.merge(df, on='FIPS')
     # geo_data = geo_data.set_index('FIPS')
     # print(list(geo_data.columns))
-    print(arg)
+    # print(arg)
 
     fig.add_trace(
         go.Choroplethmapbox(
