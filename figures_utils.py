@@ -7,10 +7,15 @@ from config import config as cfg
 Arap_outline = gpd.read_file('/Users/jamesswank/Python_Projects/Situational_Awareness_v2/us-county-boundaries')
 
 
-def get_Choropleth(df, fig=None):
+def get_Choropleth(df, gdf_2020, arg, gtype, fig=None):
 
     if fig is None:
         fig = go.Figure()
+
+        # print(df.columns)
+
+        df['FIPS'] = df['FIPS'].astype(str)
+        df = gdf_2020.merge(df, on="FIPS")
     # print(df)
     # df['FIPS'] = df['FIPS'].astype(str)
 
@@ -19,7 +24,7 @@ def get_Choropleth(df, fig=None):
     # geo_data = gdf_2020.merge(df, on='FIPS')
     # geo_data = geo_data.set_index('FIPS')
     # print(list(geo_data.columns))
-
+    print(arg)
 
     fig.add_trace(
         go.Choroplethmapbox(
@@ -33,7 +38,7 @@ def get_Choropleth(df, fig=None):
             colorscale = "earth",
             # z = arg['z_vec'],
             # z = geo_data['E_TOTPOP'],
-            z = df["E_TOTPOP"],
+            z = arg["z_vec"],
             # zmin = arg['min_value'],
             # zmax = arg['max_value'],
             # text = arg['text_vec'],
@@ -48,9 +53,14 @@ def get_Choropleth(df, fig=None):
 
 
 
-def get_figure(df):
+def get_figure(df, gdf_2020, gtype):
 
-    fig = get_Choropleth(df)
+    arg = dict()
+
+    if gtype == "Pop":
+        arg["z_vec"] = df['E_TOTPOP']
+
+    fig = get_Choropleth(df, gdf_2020, arg, gtype)
     
 
     layer = [

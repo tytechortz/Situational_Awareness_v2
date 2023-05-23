@@ -68,9 +68,9 @@ def update_Choropleth(gtype):
     
 
     if gtype == "Pop":
-        # df = df[["E_TOTPOP"]]
-        df['FIPS'] = df['FIPS'].astype(str)
-        df = gdf_2020.merge(df, on="FIPS")
+        df = df
+        # df['FIPS'] = df['FIPS'].astype(str)
+        # df = gdf_2020.merge(df, on="FIPS")
         
         # print(df)
 
@@ -83,7 +83,9 @@ def update_Choropleth(gtype):
     
     
     fig = get_figure(
-        df
+        df,
+        gdf_2020,
+        gtype
     )
 
 
