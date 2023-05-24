@@ -7,7 +7,7 @@ from config import config as cfg
 Arap_outline = gpd.read_file('/Users/jamesswank/Python_Projects/Situational_Awareness_v2/us-county-boundaries')
 
 
-def get_Choropleth(df, gdf_2020, arg, gtype, category, fig=None):
+def get_Choropleth(df, gdf_2020, arg, marker_opacity, marker_line_width, marker_line_color, fig=None):
 
 
     if fig is None:
@@ -44,9 +44,9 @@ def get_Choropleth(df, gdf_2020, arg, gtype, category, fig=None):
             # zmax = arg['max_value'],
             # text = arg['text_vec'],
             # hoverinfo="text",
-            # marker_opacity = marker_opacity,
-            # marker_line_width = marker_line_width,
-            # marker_line_color = marker_line_color,
+            marker_opacity = marker_opacity,
+            marker_line_width = marker_line_width,
+            marker_line_color = marker_line_color,
             # # colorbar_title = arg['title'],
         )
     )
@@ -83,12 +83,13 @@ def get_figure(df, gdf_2020, gtype, category):
 
     elif gtype:
         if category == "SVI":
-            print(category)
+            # print(category)
             arg["z_vec"] = df[gtype]
-            print(arg)
+            # print(arg)
 
 
-        fig = get_Choropleth(df, gdf_2020, arg, gtype, category)
+        fig = get_Choropleth(df, gdf_2020, arg, marker_opacity=0.4,
+                             marker_line_width=1, marker_line_color='#6666cc')
         
 
         # layer = [

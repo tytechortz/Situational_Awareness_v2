@@ -1,7 +1,8 @@
-from dash import Dash, html, dcc, Input, Output, State
+from dash import Dash, html, dcc, Input, Output, State, ctx
 import dash_bootstrap_components as dbc
 import geopandas as gpd
 import plotly.graph_objects as go
+import random
 
 from utils import (
     get_SVI_data,
@@ -26,6 +27,12 @@ CT_data = get_CT_data()
 
 col_list = list(SVI_data)
 # print(col_list)
+# print(CT_data.columns)
+tracts = CT_data["TRACTCE"].values
+initial_tract = random.choice(tracts)
+intitial_geo_tract = CT_data.loc[CT_data["TRACTCE"] == initial_tract]
+# print(tracts)
+# print(initial_tract)
 
 def blank_fig(height):
     """
@@ -55,6 +62,16 @@ app.layout = dbc.Container([
                 value="SVI",
                 inline=True
             ),
+        ], width=2),
+        dbc.Col([
+            dcc.Dropdown(
+                id="tracts",
+                options=[
+                    {"label": i, "value": i}
+                    for i in tracts
+                ],
+                # value="SVI",
+            ),
             dcc.Dropdown(id='graph-type')
         ], width=2)
     ])
@@ -73,20 +90,21 @@ def category_options(selected_value):
 @app.callback(
     Output("ct-map", "figure"),
     Input("map-category", "value"),
-    Input("graph-type", "value")
+    Input("graph-type", "value"),
+    Input("tract", "value")
 )
-def update_Choropleth(category, gtype):
-    print(category)
+def update_Choropleth(category, gtype, tracts):
+    # print(category)
     df = SVI_data
 
     gdf_2020 = CT_data
-    print(gtype)
+    # print(gtype)
     if gtype is None:
         fig = get_figure(
             df,
             gdf_2020,
             gtype,
-            category
+            category,
         )
         return fig
     
@@ -103,7 +121,23 @@ def update_Choropleth(category, gtype):
 
     # elif gtype == "Density":
     #     df_
+        changed_id = ctx.triggered_id
+        print(changed_id)
+        geo_tracts = dict()
 
+        print(CT_data)
+
+        # for k in CT_data["TRACTCE"].keys():
+        # if k != "features":
+        #     geo_tracts[k] = CT_data["TRACTCE"][k]
+        # else:
+        #     geo_tracts[k] = [
+        #         CT_data["TRACTCE"][tract]
+        #         for tract in tracts
+        #             # if tract in CT_data["TRACTCE"]
+        #         ]
+        
+        # print(changed_id)
 
 
     
@@ -113,7 +147,7 @@ def update_Choropleth(category, gtype):
             df,
             gdf_2020,
             gtype,
-            category
+            category,
         )
 
 
