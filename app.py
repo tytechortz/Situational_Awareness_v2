@@ -70,10 +70,12 @@ app.layout = dbc.Container([
                     {"label": i, "value": i}
                     for i in tracts
                 ],
+                multi=True,
+                style={"color": "black"},
                 # value="SVI",
             ),
             dcc.Dropdown(id='graph-type')
-        ], width=2)
+        ], width=4)
     ])
 ])
 
